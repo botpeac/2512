@@ -1,4 +1,5 @@
-const CACHE_NAME = "tts-pwa-cache-v1";
+const CACHE_NAME = "tts-highlight-cache-v1";
+
 const FILES_TO_CACHE = [
   "index.html",
   "manifest.json",
