@@ -1,103 +1,180 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TTS Highlight PWA</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TTS PWA</title>
 
-  <link rel="manifest" href="manifest.json">
-  <link rel="icon" href="icon-192.png">
-
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-title" content="TTS App">
-  <link rel="apple-touch-icon" href="icon-192.png">
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" href="icon-192.png" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-title" content="TTS App" />
+  <link rel="apple-touch-icon" href="icon-192.png" />
 
   <style>
+    /* ======= BODY ======= */
     body {
-      font-family: Arial, sans-serif;
-      background: #fafafa;
-      padding: 20px;
-      max-width: 600px;
-      margin: auto;
+      font-family: "Inter", sans-serif;
+      margin: 0;
+      padding: 40px;
+      background: linear-gradient(135deg, #0f172a, #1e293b, #334155);
+      min-height: 100vh;
+      color: #e2e8f0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
+
+    /* ======= GLASS PANEL ======= */
+    .glass-panel {
+      width: 90%;
+      max-width: 700px;
+      padding: 30px;
+      border-radius: 25px;
+      background: rgba(255, 255, 255, 0.08);
+      box-shadow: 0 0 35px rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(18px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
+    h2 {
+      font-weight: 600;
+      text-align: center;
+      margin-top: 0;
+      font-size: 26px;
+      color: #fff;
+    }
+
+    /* ======= TEXTAREA ======= */
     textarea {
       width: 100%;
-      height: 140px;
+      height: 150px;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      border-radius: 18px;
+      padding: 14px;
       font-size: 16px;
-      padding: 10px;
-      border-radius: 6px;
-      border: 1px solid #ccc;
+      color: #fff;
+      resize: none;
+      outline: none;
+      backdrop-filter: blur(4px);
     }
-    select, button, input[type=range] {
-      margin-top: 10px;
-      padding: 10px;
-      font-size: 16px;
-      border-radius: 6px;
+    textarea::placeholder {
+      color: #cbd5e1;
     }
+
+    /* ======= LABELS & SELECT ======= */
+    label {
+      font-weight: 500;
+      margin-top: 18px;
+      display: block;
+    }
+
+    select, input[type=range] {
+      width: 100%;
+      padding: 12px;
+      border-radius: 14px;
+      margin-top: 6px;
+      border: none;
+      color: #fff;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(4px);
+      outline: none;
+    }
+
+    input[type=range] {
+      cursor: pointer;
+    }
+
+    /* ======= BUTTONS ======= */
+    .btn-container {
+      margin-top: 20px;
+      display: flex;
+      gap: 14px;
+    }
+
     button {
+      flex: 1;
+      padding: 14px;
+      border-radius: 14px;
+      font-size: 16px;
       border: none;
       cursor: pointer;
-      background: #007bff;
-      color: white;
+      font-weight: 600;
+      transition: 0.25s;
+      color: #fff;
     }
-    button:hover {
-      background: #0056b3;
+
+    #speakBtn {
+      background: linear-gradient(135deg, #2563eb, #3b82f6);
     }
+    #speakBtn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 0 12px #3b82f6;
+    }
+
     #stopBtn {
-      background: #dc3545;
-      margin-left: 10px;
+      background: linear-gradient(135deg, #dc2626, #ef4444);
     }
-    label {
-      margin-top: 15px;
-      display: block;
-      font-weight: bold;
+    #stopBtn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 0 12px #ef4444;
     }
+
+    /* ======= HIGHLIGHT BOX ======= */
     #highlightBox {
-      margin-top: 20px;
-      padding: 15px;
-      border-radius: 6px;
-      background: #fff;
-      border: 1px solid #ccc;
-      min-height: 80px;
+      margin-top: 25px;
+      padding: 18px;
+      border-radius: 16px;
+      min-height: 90px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
       line-height: 1.6;
+      color: #fff;
       white-space: pre-wrap;
     }
+
     .highlight {
-      background: yellow;
+      background: #ffe45e;
+      color: #000;
+      padding: 2px 4px;
+      border-radius: 5px;
     }
   </style>
 </head>
 <body>
 
-  <h2>🔊 Text-to-Speech with Highlight (PWA)</h2>
+  <div class="glass-panel">
+    <h2>🔊  TTS</h2>
 
-  <textarea id="textInput" placeholder="Type text..."></textarea>
+    <textarea id="textInput" placeholder="Type text here..."></textarea>
 
-  <label for="voiceSelect">Choose Voice:</label>
-  <select id="voiceSelect"></select>
+    <label>Voice</label>
+    <select id="voiceSelect"></select>
 
-  <label for="speedSlider">Speed: <span id="speedVal">1.0</span></label>
-  <input type="range" min="0.5" max="2" step="0.1" value="1" id="speedSlider">
+    <label>Speed: <span id="speedVal">1.0</span></label>
+    <input type="range" min="0.5" max="2" step="0.1" value="1" id="speedSlider">
 
-  <label for="pitchSlider">Pitch: <span id="pitchVal">1.0</span></label>
-  <input type="range" min="0" max="2" step="0.1" value="1" id="pitchSlider">
+    <label>Pitch: <span id="pitchVal">1.0</span></label>
+    <input type="range" min="0" max="2" step="0.1" value="1" id="pitchSlider">
 
-  <button id="speakBtn">Speak</button>
-  <button id="stopBtn">Stop</button>
+    <div class="btn-container">
+      <button id="speakBtn">Speak</button>
+      <button id="stopBtn">Stop</button>
+    </div>
 
-  <div id="highlightBox"></div>
+    <div id="highlightBox"></div>
+  </div>
 
   <script>
     const textInput = document.getElementById("textInput");
     const speakBtn = document.getElementById("speakBtn");
     const stopBtn = document.getElementById("stopBtn");
     const voiceSelect = document.getElementById("voiceSelect");
-
     const speedSlider = document.getElementById("speedSlider");
     const pitchSlider = document.getElementById("pitchSlider");
     const speedVal = document.getElementById("speedVal");
     const pitchVal = document.getElementById("pitchVal");
-
     const highlightBox = document.getElementById("highlightBox");
 
     let voices = [];
@@ -106,54 +183,52 @@
       voices = speechSynthesis.getVoices();
       voiceSelect.innerHTML = "";
       voices.forEach((voice, index) => {
-        const option = document.createElement("option");
-        option.value = index;
-        option.textContent = `${voice.name} (${voice.lang})`;
-        voiceSelect.appendChild(option);
+        const opt = document.createElement("option");
+        opt.value = index;
+        opt.textContent = `${voice.name} (${voice.lang})`;
+        voiceSelect.appendChild(opt);
       });
     }
 
     speechSynthesis.onvoiceschanged = loadVoices;
     loadVoices();
 
-    speedSlider.oninput = () => speedVal.textContent = speedSlider.value;
-    pitchSlider.oninput = () => pitchVal.textContent = pitchSlider.value;
+    speedSlider.oninput = () => (speedVal.textContent = speedSlider.value);
+    pitchSlider.oninput = () => (pitchVal.textContent = pitchSlider.value);
 
-    function highlightText(fullText, start, length) {
-      const before = fullText.slice(0, start);
-      const word = fullText.slice(start, start + length);
-      const after = fullText.slice(start + length);
-
+    function highlightText(full, start, length) {
+      const before = full.slice(0, start);
+      const word = full.slice(start, start + length);
+      const after = full.slice(start + length);
       highlightBox.innerHTML =
         `${before}<span class="highlight">${word}</span>${after}`;
     }
 
     speakBtn.addEventListener("click", () => {
       const text = textInput.value.trim();
-      if (!text) return alert("Please type something!");
+      if (!text) return alert("Please type something");
 
       highlightBox.textContent = text;
 
-      const utterance = new SpeechSynthesisUtterance(text);
+      const u = new SpeechSynthesisUtterance(text);
+      const selected = voices[voiceSelect.value];
+      if (selected) u.voice = selected;
 
-      const selectedVoice = voices[voiceSelect.value];
-      if (selectedVoice) utterance.voice = selectedVoice;
+      u.rate = parseFloat(speedSlider.value);
+      u.pitch = parseFloat(pitchSlider.value);
 
-      utterance.rate = parseFloat(speedSlider.value);
-      utterance.pitch = parseFloat(pitchSlider.value);
-
-      utterance.onboundary = (event) => {
-        if (event.name === "word") {
-          highlightText(text, event.charIndex, event.charLength);
+      u.onboundary = (e) => {
+        if (e.name === "word") {
+          highlightText(text, e.charIndex, e.charLength);
         }
       };
 
-      utterance.onend = () => {
-        highlightBox.innerHTML = text;
+      u.onend = () => {
+        highlightBox.textContent = text;
       };
 
       speechSynthesis.cancel();
-      speechSynthesis.speak(utterance);
+      speechSynthesis.speak(u);
     });
 
     stopBtn.addEventListener("click", () => {
@@ -165,6 +240,5 @@
       navigator.serviceWorker.register("service-worker.js");
     }
   </script>
-
 </body>
 </html>
