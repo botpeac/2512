@@ -1,6 +1,6 @@
 {
-  "name": "TTS + STT PWA",
-  "short_name": "TTS-STT",
+  "name": "TTS Highlight PWA",
+  "short_name": "TTS-HL",
   "start_url": "index.html",
   "display": "standalone",
   "background_color": "#ffffff",
